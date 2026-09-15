@@ -17,12 +17,12 @@ const featuredAuthor = featured ? await authorOf(featured) : null
       <p class="lead">{featured.excerpt}</p>
     </article>
   )}
-  {latest.length > 0 && <h2 style="font-family:system-ui,sans-serif;margin-top:40px">Latest</h2>}
+  {latest.length > 0 && <h2 class="section">Latest</h2>}
   <ul class="grid">
     {latest.map(a => (
       <li class="card">
         <a href={`/articles/${a.slug}`}>
-          {mediaUrl(a.cover, 'thumbnail') ? <img src={mediaUrl(a.cover, 'thumbnail')} alt="" /> : <div style="aspect-ratio:3/2;background:var(--line);border-radius:6px"></div>}
+          {mediaUrl(a.cover, 'thumbnail') && <img src={mediaUrl(a.cover, 'thumbnail')} alt="" />}
           <h3>{a.title}</h3>
         </a>
         <p>{a.excerpt}</p>

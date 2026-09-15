@@ -23,7 +23,7 @@ const related = Array.isArray(article.related) ? await s.articlesIn(article.rela
   </article>
   {related.length > 0 && (
     <section class="related">
-      <h2 style="font-family:system-ui,sans-serif">Related</h2>
+      <h2 class="section">Related</h2>
       <ul class="grid">{related.map(r => <li class="card"><a href={`/articles/${r.slug}`}><h3>{r.title}</h3></a><p>{r.excerpt}</p></li>)}</ul>
     </section>
   )}

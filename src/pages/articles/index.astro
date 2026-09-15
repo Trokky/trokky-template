@@ -11,7 +11,7 @@ const articles = await s.articles()
     {articles.map(a => (
       <li class="card">
         <a href={`/articles/${a.slug}`}>
-          {mediaUrl(a.cover, 'thumbnail') ? <img src={mediaUrl(a.cover, 'thumbnail')} alt="" /> : <div style="aspect-ratio:3/2;background:var(--line);border-radius:6px"></div>}
+          {mediaUrl(a.cover, 'thumbnail') && <img src={mediaUrl(a.cover, 'thumbnail')} alt="" />}
           <h3>{a.title}</h3>
         </a>
         <p>{formatDate(a.publishedAt)} — {a.excerpt}</p>
