@@ -23,7 +23,7 @@ export default {
       // The first administrator has just claimed the instance: give them something to look at.
       // Runs after the response so the claim itself is never slowed or failed by seeding.
       if (request.method === 'POST' && pathname === `${API_PATH}/auth/claim` && response.ok) {
-        ctx.waitUntil(seedSampleContent(core).catch(error => console.error('seed failed', error)))
+        ctx.waitUntil(seedSampleContent(core, env.ASSETS, new URL(request.url).origin).catch(error => console.error('seed failed', error)))
       }
       return response
     }

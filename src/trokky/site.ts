@@ -51,11 +51,14 @@ export async function site(core: TrokkyCore): Promise<Site> {
   }
 }
 
-/** A media field holds an id, or an object carrying one. */
+/**
+ * A media field holds `{ asset: { _ref: <media id> }, alt?, caption? }` — the shape the Studio
+ * reads and writes. A bare id is accepted too, for content written by hand.
+ */
 export function mediaId(value: unknown): string | null {
   if (typeof value === 'string') return value
-  if (value && typeof value === 'object' && typeof (value as { id?: unknown }).id === 'string') return (value as { id: string }).id
-  return null
+  const ref = (value as { asset?: { _ref?: unknown } } | null)?.asset?._ref
+  return typeof ref === 'string' ? ref : null
 }
 
 export const mediaUrl = (value: unknown, variant?: 'thumbnail' | 'large'): string | null => {
