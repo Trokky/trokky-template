@@ -38,6 +38,14 @@ npm install
 npm run build && npm run preview  # wrangler dev, with local D1/R2/Images
 ```
 
+## Notes
+
+- `database_id` in `wrangler.jsonc` is **empty on purpose**. Wrangler and the deploy button
+  provision a D1 database with that name on first deploy and bind it. Putting an id there would
+  point every copy of this template at one database.
+- The Astro adapter adds a `SESSION` KV namespace for its session store. The template does not
+  use sessions; it is harmless and free-tier, and provisioned the same way.
+
 ## Make it yours
 
 - `src/trokky/schemas.ts` — the content model. The Studio follows it.
