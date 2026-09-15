@@ -1,0 +1,16 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "types": [
+      "@cloudflare/workers-types/2023-07-01",
+      "./worker-configuration.d.ts"
+    ],
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*",
+    "scripts/**/*",
+    "astro.config.mjs"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "trokky-magazine",
+  // Our own entry: routes /api and /studio to Trokky, everything else to Astro.
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-09-01",
+  // Trokky's core imports crypto, events and module directly.
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    // Every request goes through the Worker: /studio needs its config injected, and /api is not
+    // a file. Astro and the Studio handler fetch static files through the binding themselves.
+    "run_worker_first": true,
+    // Serve paths literally, so the Studio handler can ask for /studio/index.html and get it
+    // rather than a redirect to /studio/.
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "trokky-magazine", "database_id": "" }
+  ],
+  "r2_buckets": [
+    { "binding": "MEDIA", "bucket_name": "trokky-magazine-media" }
+  ],
+  // Thumbnails and previews are made through the Images binding at upload time.
+  "images": { "binding": "IMAGES" },
+  "observability": { "enabled": true }
+}
