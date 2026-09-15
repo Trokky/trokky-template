@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.1",
-    "@trokky/client": "^3.4.0",
-    "@trokky/studio": "^3.4.0",
-    "@trokky/trokky": "^3.4.0",
+    "@trokky/client": "^3.4.1",
+    "@trokky/studio": "^3.4.1",
+    "@trokky/trokky": "^3.4.1",
     "astro": "^7.3.2"
   },
   "devDependencies": {
