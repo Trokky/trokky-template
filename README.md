@@ -36,6 +36,7 @@ between deploying and opening the link, not for an instance left sitting.
 cp .dev.vars.example .dev.vars   # fill both secrets
 npm install
 npm run build && npm run preview  # wrangler dev, with local D1/R2/Images
+npm run build && npm run deploy   # to your own account, once wrangler is logged in
 ```
 
 ## Notes
