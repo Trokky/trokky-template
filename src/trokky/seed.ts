@@ -7,13 +7,16 @@
  * or delete. Every document id is fixed, so seeding twice is harmless; media is only uploaded
  * when there are no articles yet.
  *
- * The images and PDFs ship as static assets under /seed and go through the normal upload
- * pipeline, so thumbnails are made by the Images binding exactly as they would be for a real
- * upload.
+ * The images and PDFs ship with the project and go through the normal upload pipeline, so
+ * thumbnails are made exactly as they would be for a real upload.
+ *
+ * How those files are read differs by runtime — a Worker has an assets binding, a Node process
+ * has a disk — so the caller supplies a reader rather than this file guessing.
  */
 import type { TrokkyCore } from '@trokky/trokky'
 
-type Assets = { fetch(request: Request): Promise<Response> }
+/** Read one file from `public/seed/`, however this runtime reaches it. */
+export type SeedAssetReader = (path: string) => Promise<ArrayBuffer>
 
 const P = { _status: 'published' } as const
 
@@ -23,13 +26,11 @@ const media = (id: string, alt?: string) => ({ _type: 'media', asset: { _type: '
 const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString()
 const paras = (...ps: string[]) => ps.map(p => `<p>${p}</p>`).join('')
 
-export async function seedSampleContent(core: TrokkyCore, assets: Assets, origin: string): Promise<void> {
+export async function seedSampleContent(core: TrokkyCore, readAsset: SeedAssetReader): Promise<void> {
   if ((await core.listDocuments('article', { limit: 1 })).length > 0) return
 
   const upload = async (path: string, filename: string, type: string): Promise<string> => {
-    const response = await assets.fetch(new Request(`${origin}/seed/${path}`))
-    if (!response.ok) throw new Error(`seed asset missing: /seed/${path} (${response.status})`)
-    const file = new File([await response.arrayBuffer()], filename, { type })
+    const file = new File([await readAsset(path)], filename, { type })
     return (await core.uploadMedia(file)).id
   }
 

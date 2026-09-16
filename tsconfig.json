@@ -1,16 +1,18 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "types": [
-      "@cloudflare/workers-types/2023-07-01",
-      "./worker-configuration.d.ts"
+      "@cloudflare/workers-types/2023-07-01"
     ],
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
   "include": [
     "src/**/*",
-    "scripts/**/*",
-    "astro.config.mjs"
+    "scripts/**/*"
   ]
 }

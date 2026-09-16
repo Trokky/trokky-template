@@ -23,7 +23,13 @@ export default {
       // The first administrator has just claimed the instance: give them something to look at.
       // Runs after the response so the claim itself is never slowed or failed by seeding.
       if (request.method === 'POST' && pathname === `${API_PATH}/auth/claim` && response.ok) {
-        ctx.waitUntil(seedSampleContent(core, env.ASSETS, new URL(request.url).origin).catch(error => console.error('seed failed', error)))
+        const origin = new URL(request.url).origin
+        const readAsset = async (path: string): Promise<ArrayBuffer> => {
+          const asset = await env.ASSETS.fetch(new Request(`${origin}/seed/${path}`))
+          if (!asset.ok) throw new Error(`seed asset missing: /seed/${path} (${asset.status})`)
+          return asset.arrayBuffer()
+        }
+        ctx.waitUntil(seedSampleContent(core, readAsset).catch(error => console.error('seed failed', error)))
       }
       return response
     }

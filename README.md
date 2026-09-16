@@ -1,55 +1,48 @@
-# Trokky magazine template
+# trokky-template
 
-A complete site on [Trokky](https://trokky.dev) — Astro frontend, Trokky API, and Studio — that
-deploys to your own Cloudflare account in one click.
+A [Trokky](https://trokky.dev) project: a site, the Studio and the API, on Cloudflare Workers.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Trokky/trokky-template)
+Generated with `npm create trokky@latest`.
 
-## What you get
+## What is in it
 
-One Worker serving three things:
-
-| path | what |
+| | |
 |---|---|
-| `/` | the magazine, rendered on request — edit in Studio, refresh, it's live |
-| `/studio` | the Studio, where content is written |
-| `/api` | the Trokky API |
+| Content | cloudflare-d1 |
+| Uploads | cloudflare-r2 |
+| Thumbnails | cloudflare-images |
+| Parts | a site, the Studio and the API |
+| Starting content | magazine |
 
-Cloudflare provisions a **D1** database for content, an **R2** bucket for uploads, and the
-**Images** binding for thumbnails — all on your account. The deploy button clones this repo into
-your GitHub or GitLab, so every push redeploys.
-
-## The first minute
-
-1. Click the button. It asks for two secrets — **generate them, don't invent them**:
-   `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
-2. Open `https://<your-worker>.workers.dev/studio`. Nobody owns the instance yet, so the first
-   screen asks you to **claim** it: pick a username and password, paste the claim secret.
-3. You are signed in, and the magazine has sample content to edit or delete.
-
-Without a claim secret the claim is open to whoever reaches the URL first — fine for the minute
-between deploying and opening the link, not for an instance left sitting.
-
-## Local
+## Run it
 
 ```
 cp .dev.vars.example .dev.vars   # fill both secrets
 npm install
-npm run build && npm run preview  # wrangler dev, with local D1/R2/Images
-npm run build && npm run deploy   # to your own account, once wrangler is logged in
+npm run build && npm run preview
 ```
 
-## Notes
+## Deploy
 
-- `database_id` in `wrangler.jsonc` is **empty on purpose**. Wrangler and the deploy button
-  provision a D1 database with that name on first deploy and bind it. Putting an id there would
-  point every copy of this template at one database.
-- The Astro adapter adds a `SESSION` KV namespace for its session store. The template does not
-  use sessions; it is harmless and free-tier, and provisioned the same way.
+```
+npm run build && npm run deploy
+```
+
+Wrangler provisions the D1 database and R2 bucket named in `wrangler.jsonc` on first deploy.
+`database_id` is intentionally empty: it is bound by name.
+
+## The first minute
+
+Open `/studio`. Nobody owns this instance yet, so the first
+screen asks you to **claim** it: pick a username and password, and paste `TROKKY_CLAIM_SECRET`.
+Sample content appears a moment later — edit it or delete it.
+
+Without a claim secret the claim is open to whoever reaches the URL first. That is fine for the
+minute between deploying and opening the link; it is not fine for an instance left sitting.
 
 ## Make it yours
 
 - `src/trokky/schemas.ts` — the content model. The Studio follows it.
 - `src/trokky/structure.ts` — the Studio sidebar.
 - `src/pages/` and `src/layouts/` — the site.
-- `wrangler.jsonc` — the Worker's name and resources.
+- `wrangler.jsonc` — the Worker name and its resources.
